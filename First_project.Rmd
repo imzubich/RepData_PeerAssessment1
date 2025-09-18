@@ -1,0 +1,97 @@
+---
+title: "Reproducible_research_1st_project"
+author: "Zubair Afzal"
+date: "2025-09-18"
+output: html_document
+---
+
+
+```{r echo=TRUE}
+library(dplyr)
+library(ggplot2)
+library(lattice)
+```
+
+# **Loading and Processing Data**
+
+```{r echo=TRUE}
+activity <- read.csv("activity.csv")
+str(activity)
+summary(activity)
+```
+
+
+# **Mean Total Number of Steps per Day**
+
+```{r echo=TRUE}
+steps_per_day <- activity %>%
+  group_by(date) %>%
+  summarise(total_steps = sum(steps, na.rm = TRUE))
+hist(steps_per_day$total_steps,
+     main = "Total Steps Per day",
+     xlab = "Steps",
+     col = "steelblue"
+     )
+mean(steps_per_day$total_steps)
+median(steps_per_day$total_steps)
+```
+
+# **Daily average activity pattern**
+
+```{r echo=TRUE}
+
+daily_activity <- activity%>%
+  group_by(interval) %>%
+  summarise(mean_steps = mean(steps, na.rm = TRUE))
+
+plot(daily_activity$interval, daily_activity$mean_steps, type = "l",
+     main = "Average Daily Activity Pattern",
+     xlab = "5-minute Interval", ylab = "Average Steps"
+     )
+
+daily_activity[which.max(daily_activity$mean_steps), ]
+```
+
+
+# **Imputing Missing Values**
+
+```{r echo=TRUE}
+sum(is.na(activity$steps))
+activity_filled <- activity %>%
+  left_join(daily_activity, by = "interval") %>%
+  mutate(steps = ifelse(is.na(steps), mean_steps, steps)) %>%
+  select(steps, date, interval)
+
+steps_per_day_filled <- activity_filled %>%
+  group_by(date) %>%
+  summarise(total_steps = sum(steps))
+hist(steps_per_day_filled$total_steps,
+     main = "Total Steps per Day (Missing Values Imputed)",
+     xlab = "Steps", col = "darkgreen")
+mean(steps_per_day_filled$total_steps)
+median(steps_per_day_filled$total_steps)
+```
+
+## **Weekday VS Weekend Pattern**
+
+
+```{r echo=TRUE}
+
+activity_filled$day_type <- ifelse(weekdays(as.Date(activity_filled$date)) %in%
+                                     c("Saturday","Sunday"),
+                                   "weekend","weekday")
+avg_daytype <- activity_filled %>%
+  group_by(day_type, interval) %>%
+  summarise(mean_steps = mean(steps))
+xyplot(mean_steps ~ interval | day_type, data = avg_daytype, type = "l",
+       layout = c(1,2),
+       xlab = "Interval", ylab = "Average Steps")
+```
+
+
+End of the Project...
+
+
+
+
+
