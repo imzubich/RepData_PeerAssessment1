@@ -5,22 +5,6 @@ Zubair Afzal
 
 ``` r
 library(dplyr)
-```
-
-    ## Warning: package 'dplyr' was built under R version 4.5.1
-
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
-
-``` r
 library(ggplot2)
 library(lattice)
 ```
@@ -63,7 +47,7 @@ hist(steps_per_day$total_steps,
      )
 ```
 
-![](First_project_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](First_project_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ``` r
 mean(steps_per_day$total_steps)
@@ -90,7 +74,7 @@ plot(daily_activity$interval, daily_activity$mean_steps, type = "l",
      )
 ```
 
-![](First_project_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](First_project_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 ``` r
 daily_activity[which.max(daily_activity$mean_steps), ]
@@ -123,7 +107,7 @@ hist(steps_per_day_filled$total_steps,
      xlab = "Steps", col = "darkgreen")
 ```
 
-![](First_project_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](First_project_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 ``` r
 mean(steps_per_day_filled$total_steps)
@@ -156,6 +140,6 @@ xyplot(mean_steps ~ interval | day_type, data = avg_daytype, type = "l",
        xlab = "Interval", ylab = "Average Steps")
 ```
 
-![](First_project_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](First_project_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 End of the Project…
